@@ -29,7 +29,7 @@ Be sure to copy it and save it someplace secure, as you won't be able to access 
 Run the following commands in your terminal:
 
 ```
-node -v
+npm -v
 node -v
 ```
 
