@@ -13,6 +13,8 @@ const express = require('express');  // Server
 const bodyParser = require('body-parser');  // module for parsing POST request (REF: https://expressjs.com/en/resources/middleware/body-parser.html)
 const sgMail = require('@sendgrid/mail');  // Import SendGrid mail module from node
 
+require('dotenv').config();
+
 // Pull in SendGrid API key from local ENV variables
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -22,15 +24,16 @@ const app = express();
 app.get('/', (request, response) =>  response.sendFile(`${__dirname}/index.html`));
 
 // SEND EMAIL WITH CONTACT FORM DATA
-var SAMPLE_TO_EMAIL = '';
-var SAMPLE_FROM_EMAIL = '';
+var SENDGRID_TO_EMAIL = process.env.SENDGRID_TO_EMAIL;
+var SENDGRID_FROM_EMAIL = process.env.SENDGRID_FROM_EMAIL;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.post('/api/send', (req, res) => {
     const postBody = req.body;
-    console.log("postBody: ", postBody);
+    // Logging data sent from client POST request
+    console.log("client POST request body: ", postBody);
 
     // Define placeholder variables for email message in plain text and html formats
     var msgTxt = "";
@@ -59,15 +62,16 @@ app.post('/api/send', (req, res) => {
 
     // Store email data to an object for sending via SendGrid
     const emailData = {
-        to: SAMPLE_TO_EMAIL,
-        from: SAMPLE_FROM_EMAIL,
+        to: SENDGRID_TO_EMAIL,
+        from: SENDGRID_FROM_EMAIL,
         // This could be used to send form from contact's email, but not recommeded due to potentially triggering spam flag
-        //from: (postBody.email) ? postBody.email : SAMPLE_FROM_EMAIL,
+        //from: (postBody.email) ? postBody.email : SENDGRID_FROM_EMAIL,
         subject: (postBody.subject) ? postBody.subject : 'New Website Contact Form Message',
         text: msgTxt,
         html: msgHtml,
     };
 
+    // Logging data we're sending to SendGrid API
     console.log("emailData:", emailData);
 
     // Send email with user's submitted data
@@ -85,6 +89,7 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
   console.log('Press Ctrl+C to quit.');
+  console.log(`View contact form on localhost:${PORT}`);
 });
 
 
@@ -104,12 +109,12 @@ app.post('/api/data', (req, res) => {
 });
 
 // EXAMPLE: SEND EMAIL with SendGrid (not hooked into form)
-// var SAMPLE_TO_EMAIL = 'luciano.gina@gmail.com';
-// var SAMPLE_FROM_EMAIL = 'gina@mobiusinno.com';
+// var SENDGRID_TO_EMAIL = 'luciano.gina@gmail.com';
+// var SENDGRID_FROM_EMAIL = 'gina@mobiusinno.com';
 
 // API 'send' request
 app.get('/send', (req, res) => {
-    const {query: {to = SAMPLE_TO_EMAIL, from = SAMPLE_FROM_EMAIL}} = req;
+    const {query: {to = SENDGRID_TO_EMAIL, from = SENDGRID_FROM_EMAIL}} = req;
     // other options could be customized further
 
     const msg = {

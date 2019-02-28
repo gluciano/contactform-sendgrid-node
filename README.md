@@ -1,4 +1,4 @@
-# Contact Form - sending an email with HTML form data, using SendGrid & Node
+# Contact Form - sending form data in an email with SendGrid & Node
 
 ## Summary
 
@@ -21,7 +21,7 @@ Other:
 
 Get your unique API key from the [SendGrid Website](https://app.sendgrid.com/login?redirect_to=%2Fsettings%2Fapi_keys)
 
-Be sure to copy it and save it someplace secure, as you won't be able to access it once it's been assigned.
+**IMPORTANT:** Be sure to copy it and save it someplace secure, as you won't be able to access it once it's been assigned.
 
 
 ### Confirm that you have node and npm
@@ -35,16 +35,16 @@ node -v
 
 ## Installing
 
-### Save 'sendgrid-app' to a local repository
+### Save 'contactform-sendgrid-node' to a local repository
 
 Follow these steps to get your local development envirnoment running.
 
-Save this app (i.e. - 'sendgrid-app' folder) to the local directory you'll be using for this project.
+Save this app (i.e. - 'contactform-sendgrid-node' folder) to the local directory you'll be using for this project.
 
-In terminal, open the 'sendgrid-app' folder:
+In terminal, open the 'contactform-sendgrid-node' folder:
 
 ```
-cd YOUR_LOCAL_PATH/sendgrid-app
+cd YOUR_LOCAL_PATH/contactform-sendgrid-node
 ```
 
 ### Install all node module dependencies (package.json)
@@ -65,19 +65,23 @@ Then run the following commands to create a local sendgrid.env file and add it t
 echo "export SENDGRID_API_KEY='YOUR_API_KEY'" > sendgrid.env
 echo "sendgrid.env" >> .gitignore
 source ./sendgrid.env
-
 ```
 
+Create an additional **.env** file and add the following SendGrid variables:
+
+```
+SENDGRID_TO_EMAIL=toemail@domain.com
+SENDGRID_FROM_EMAIL=fromemail@domain.com
+```
 
 ## Running locally
 
 ### Start local server
 
-In your terminal, from the 'sendgrid-app' directory, run the following command:
+In your terminal, from the 'contactform-sendgrid-node' directory, run the following command:
 
 ```
 node app.js
-
 ```
 
 When the server is running you should see:
@@ -85,6 +89,7 @@ When the server is running you should see:
 ```
 App listening on port 8080
 Press Ctrl+C to quit.
+View contact form on localhost:8080
 ```
 
 ### Open contact form in the browser
@@ -93,18 +98,15 @@ Once the server is running, open the following link in your browser to display t
 
 ```
 localhost:8080
-
 ```
 
 ## Testing
 
-Once you have your app running locally, you can send a test email as follows.
-
-In app.js, update the hard-coded variables for SAMPLE_TO_EMAIL and SAMPLE_FROM_EMAIL.
+Once you have your app running locally and ENV variables defined, you can send a test email as follows.
 
 With localhost:8080 up and the server running, fill out the contact form and click 'send.'
 
-You should see results logged in the browser and the Terminal.  You should also receive an email, formatted in HTML sent to the email you defined in the SAMPLE_TO_EMAIL variable, from the email you defined in SAMPLE_FROM_EMAIL.
+You should see results logged in the browser and the Terminal.  You should also receive an email, formatted in HTML sent to the email you defined in the SENDGRID_TO_EMAIL variable, from the email you defined in SENDGRID_FROM_EMAIL.
 
 
 ## Usage
