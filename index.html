@@ -9,12 +9,12 @@
 <script type="text/javascript">
     //<![CDATA[
     $(function () {
-      $('#active-contact-form').on('submit',function (e) {
+      $('#contact-form').on('submit',function (e) {
         // prevent the page from refreshing on submit
         e.preventDefault();
 
         // serialize form data to send to 'send' API
-        var formData = $('#active-contact-form').serialize();
+        var formData = $('#contact-form').serialize();
         console.log("formData submitted: ", formData);
 
         // send serialized form data to 'send' API endpoint
